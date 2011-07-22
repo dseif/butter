@@ -243,6 +243,80 @@ THE SOFTWARE.
       return undefined;    
     }; //removeTrack
 
+    this.addTrackEvent = function ( track, trackEvent ) {
+      if ( typeof(track) === "string" ) {
+        track = that.getTrack( track );
+      } //if
+      if ( track ) {
+        trackEvent = track.addTrackEvent( trackEvent );
+        return trackEvent;
+      }
+      else {
+        throw new Error("No valid track specified");
+      } //if
+    }; //addTrackEvents
+
+    //getTrackEvents - Get a list of Track Events
+    this.getTrackEvents = function () {
+      var trackEvents = {};
+      for ( var i=0, l=tracks.length; i<l; ++i ) {
+        var track = tracks[i];
+        trackEvents[ track.getName() ] = track.getTrackEvents();
+      } //for
+      return trackEvents;
+    }; //getTrackEvents
+
+    this.getTrackEvent = function ( track, trackEvent ) {
+      if ( track && trackEvent ) {
+        if ( typeof(track) === "string" ) {
+          track = that.getTrack( track );
+        } //if
+        return track.getTrackEvent( trackEvent );
+      }
+      else {
+        var events = that.getTrackEvents();
+        for ( var trackName in events ) {
+          var t = events[ trackName ];
+          for ( var i=0, l=t.length; i<l; ++i ) {
+            if ( t[ i ].getName() === track ) {
+              return t[ i ];
+            }
+          }
+        } //for
+      } //if
+    }; //getTrackEvent
+
+    //removeTrackEvent - Remove a Track Event
+    this.removeTrackEvent = function ( track, trackEvent ) {
+
+      // one param given
+      if ( !trackEvent ) {
+        if ( track instanceof TrackEvent ) {
+          trackEvent = track;
+          track = trackEvent.track;
+        }
+        else if ( typeof(track) === "string" ) {
+          trackEvent = that.getTrackEvent( track );
+          track = trackEvent.track;
+        }
+        else {
+          throw new Error("Invalid parameters for removeTrackEvent");
+        }
+      } //if
+
+      if ( typeof( track ) === "string") {
+        track = that.getTrack( track );
+      }
+
+      if ( typeof( trackEvent ) === "string" ) {
+        trackEvent = track.getTrackEvent( trackEvent );
+      }
+
+      track.removeTrackEvent( trackEvent );
+      return trackEvent;
+    };
+
+
   }; //Media
 
   /****************************************************************************
@@ -307,84 +381,24 @@ THE SOFTWARE.
     //addTrackEvent - Creates a new Track Event
     this.addTrackEvent = function ( track, trackEvent ) {
       checkMedia();
-      if ( typeof(track) === "string" ) {
-        track = currentMedia.getTrack( track );
-      } //if
-      if ( track ) {
-        if ( !(trackEvent instanceof TrackEvent) ) {
-          trackEvent = new TrackEvent( trackEvent );
-        } //if
-        track.addTrackEvent( trackEvent );
-        return trackEvent;
-      }
-      else {
-        throw new Error("No valid track specified");
-      } //if
+      return currentMedia.addTrackEvent( track, trackEvent );
     }; //addTrackEvents
 
     //getTrackEvents - Get a list of Track Events
     this.getTrackEvents = function () {
       checkMedia();
-      var tracks = currentMedia.getTracks();
-      var trackEvents = {};
-      for ( var i=0, l=tracks.length; i<l; ++i ) {
-        var track = tracks[i];
-        trackEvents[ track.getName() ] = track.getTrackEvents();
-      } //for
-      return trackEvents;
+      return currentMedia.getTrackEvents();
     }; //getTrackEvents
 
     this.getTrackEvent = function ( track, trackEvent ) {
       checkMedia();
-      if ( track && trackEvent ) {
-        if ( typeof(track) === "string" ) {
-          track = that.getTrack( track );
-        } //if
-        return track.getTrackEvent( trackEvent );
-      }
-      else {
-        var events = that.getTrackEvents();
-        for ( var trackName in events ) {
-          var t = events[ trackName ];
-          for ( var i=0, l=t.length; i<l; ++i ) {
-            if ( t[ i ].getName() === track ) {
-              return t[ i ];
-            }
-          }
-        } //for
-      } //if
+      return currentMedia.getTrackEvent( track, trackEvent );
     }; //getTrackEvent
 
     //removeTrackEvent - Remove a Track Event
     this.removeTrackEvent = function ( track, trackEvent ) {
-
       checkMedia();
-
-      // one param given
-      if ( !trackEvent ) {
-        if ( track instanceof TrackEvent ) {
-          trackEvent = track;
-          track = trackEvent.track;
-        }
-        else if ( typeof(track) === "string" ) {
-          trackEvent = that.getTrackEvent( track );
-          track = trackEvent.track;
-        }
-        else {
-          throw new Error("Invalid parameters for removeTrackEvent");
-        }
-      } //if
-
-      if ( typeof( track ) === "string") {
-        track = that.getTrack( track );
-      }
-
-      if ( typeof( trackEvent ) === "string" ) {
-        trackEvent = track.getTrackEvent( trackEvent );
-      }
-
-      track.removeTrackEvent( trackEvent );
-      return trackEvent;
+      return currentMedia.removeTrackEvent( track, trackEvent );
     };
 
     /****************************************************************
