@@ -150,6 +150,15 @@ define( [ "core/logger", "core/eventmanager" ], function( Logger, EventManager )
     _element = inputOptions.element || createEventElement( inputOptions );
     _element.id = _id;
     _this.update( inputOptions );
+
+    _element.addEventListener( "mousedown", function ( e ) {
+      _eventManager.dispatch( "trackeventmousedown", e );
+    }, false);
+
+    _element.addEventListener( "mouseup", function ( e ) {
+      _eventManager.dispatch( "trackeventmouseup", e );
+    }, false);
+
     _element.addEventListener( "click", function ( e ) {
       _eventManager.dispatch( "trackeventclicked", e );
     }, false);
@@ -194,9 +203,11 @@ define( [ "core/logger", "core/eventmanager" ], function( Logger, EventManager )
           handles[ 1 ].style.visibility = state ? "visible" : "hidden";
         } //toggleHandles
         _element.addEventListener( "mouseover", function( e ){
+          _this.dispatch( "mouseover", e );
           toggleHandles( true );
         }, false );
         _element.addEventListener( "mouseout", function( e ){
+          _this.dispatch( "mouseout", e );
           toggleHandles( false );
         }, false );
         toggleHandles( false );

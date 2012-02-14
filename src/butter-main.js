@@ -161,7 +161,7 @@ THE SOFTWARE.
         for ( var i=0; i<_targets.length; ++i ) {
           if (  ( target.id !== undefined && _targets[ i ].id === target.id ) ||
                 ( target.name && _targets[ i ].name === target.name ) ||
-                _targets[ i ].name === target ) {
+                _targets[ i ].name === target || target.id === _targets[ i ].object ) {
             return _targets[ i ];
           }
         }

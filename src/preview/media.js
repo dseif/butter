@@ -15,6 +15,35 @@
           _this = this,
           _popcornTarget;
 
+      function showOverlay( e ) {
+        _this.overlay.style.display = "block";
+      }
+
+      function hideOverlay( e ) {
+        _this.overlay.style.display = "none";
+      }
+      
+      function addOverlay( id ) {
+        var overlay = document.createElement( "div" ),
+            element = document.getElementById( id ),
+            rectBounds = element.getBoundingClientRect();
+
+        overlay.style.zIndex = element.style.zIndex + 1;
+        overlay.className += " butter-media-overlay";
+
+        overlay.style.left = rectBounds.left + "px";
+        overlay.style.top = rectBounds.top + "px";
+        overlay.style.width = rectBounds.width + "px";
+        overlay.style.height = rectBounds.height + "px";
+
+        document.body.appendChild( overlay );
+        _this.overlay = overlay;
+
+        element.addEventListener( "mouseover", showOverlay, false);
+        element.addEventListener( "mouseout", hideOverlay, false);
+
+      }
+
       function setupPopcornHandlers() {
         _popcorn.listen( "timeupdate", function() {
           _popcornCurrentTime = _popcorn.currentTime();
@@ -237,6 +266,7 @@
             else {
               _mediaObject.duration = popcorn.duration();
             } //if
+            addOverlay( _mediaObject.target );
             callback( popcorn );
           } else {
             setTimeout( checkMedia, 100 );
@@ -306,6 +336,8 @@
       _mediaObject.listen( "trackeventadded", onTrackEventAdded );
       _mediaObject.listen( "trackeventremoved", onTrackEventRemoved );
       _mediaObject.listen( "trackeventupdated", onTrackEventUpdated );
+      _mediaObject.listen( "trackeventmousedown", showOverlay );
+      _mediaObject.listen( "trackeventmouseup", hideOverlay );
 
       Object.defineProperties( this, {
         media: {

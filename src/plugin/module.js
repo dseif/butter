@@ -110,6 +110,30 @@ THE SOFTWARE.
           }
           pluginElement.id = __pluginElementPrefix + _this.type;
           $( pluginElement ).draggable({ helper: "clone", appendTo: "body", zIndex: 9999999999, revert: true, revertDuration: 0 });
+          pluginElement.addEventListener( "mousedown", function( e ) {
+            var targets = butter.targets;
+                medias = butter.media;
+            for( var i = 0, l = targets.length; i < l; i ++ ) {
+              targets[ i ].dispatch( "trackeventmousedown", e );
+            }
+            for( var i = 0, l = medias.length; i < l; i++ ) {
+              medias[ i ].dispatch( "trackeventmousedown", e );
+            }
+          }, false);
+
+          $(".droppable").droppable({
+            drop: function(event, ui) {
+              var targets = butter.targets,
+                  medias = butter.media;
+              for( var i = 0, l = targets.length; i < l; i ++ ) {
+                targets[ i ].dispatch( "trackeventmouseup", e );
+              }
+              for( var i = 0, l = medias.length; i < l; i++ ) {
+                medias[ i ].dispatch( "trackeventmouseup", e );
+              }
+            }
+          });
+            
           this.element = pluginElement;
           return pluginElement;
         }; //createElement

@@ -53,6 +53,32 @@ define( [], function() {
       } //if
     });
 
+    _tlEvent.listen( "mouseout", function( e ) {
+      var target = _bEvent.popcornOptions.target; 
+      if( !target ) {
+        return;
+      }
+
+      if ( target === "Media Element" ) {
+        butter.currentMedia.dispatch( "trackeventmouseout", e );
+      } else {
+        butter.getTarget({ id: target }).dispatch( "trackeventmouseout", e );
+      }
+    });
+
+    _tlEvent.listen( "mouseover", function( e ) {
+      var target = _bEvent.popcornOptions.target; 
+      if( !target ) {
+        return;
+      }
+
+      if ( target === "Media Element" ) {
+        butter.currentMedia.dispatch( "trackeventmouseover", e );
+      } else {
+        butter.getTarget({ id: target }).dispatch( "trackeventmouseover", e );
+      }
+    });
+
     _tlEvent.listen( "trackeventclicked", function( e ){
       //butter.targettedEvent = _bEvent;
     });

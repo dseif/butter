@@ -27,12 +27,56 @@ THE SOFTWARE.
 
     var Target = function ( options ) {
       var id = Target.guid++,
+          _this = this,
           logger = new Logger( id ),
-          em = new EventManager( this );
+          em = new EventManager( this ),
+          options = options || {},
+          name = options.name || "Target" + id + Date.now();
 
-      options = options || {};
-      var name = options.name || "Target" + id + Date.now();
       this.object = options.object;
+      this.elem = document.getElementById( this.object );
+
+      function showOverlay( e ) {
+        _this.overlay.style.display = "block";
+      }
+
+      function hideOverlay( e ) {
+        _this.overlay.style.display = "none";
+      }
+
+      function createOverlay( rectBounds ) {
+        var overlay = document.createElement( "div" );
+        overlay.style.zIndex = _this.elem.style.zIndex + 1;
+        overlay.className += " butter-target-overlay";
+
+        overlay.style.left = rectBounds.left + "px";
+        overlay.style.top = rectBounds.top + "px";
+        overlay.style.width = rectBounds.width + "px";
+        overlay.style.height = rectBounds.height + "px";
+        document.body.appendChild( overlay );
+        _this.overlay = overlay;
+      }
+
+      createOverlay( this.elem.getBoundingClientRect() );
+
+      this.elem.addEventListener( "mouseover", showOverlay, false);
+      this.elem.addEventListener( "mouseout", hideOverlay, false);
+
+      em.listen( "trackeventmouseup", function( e ) {
+        hideOverlay();
+      });
+
+      em.listen( "trackeventmouseover", function( e ) {
+        showOverlay();
+      });
+
+      em.listen( "trackeventmouseout", function( e ) {
+        hideOverlay();
+      });
+
+      em.listen( "trackeventmousedown", function( e ) {
+        showOverlay();
+      });
 
       Object.defineProperty( this, "name", {
         get: function() {

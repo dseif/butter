@@ -415,3 +415,17 @@ THE SOFTWARE.
 	webkit-box-shadow: 0 1px 0 #656565;
 	width: 120px;
 }
+
+.butter-target-overlay {
+  position: absolute;
+  background-color: rgba( 200, 200, 0, 0.6 );
+  pointer-events: none;
+  display: none;
+}
+
+.butter-media-overlay {
+  position: absolute;
+  background-color: rgba( 200, 0, 200, 0.6 );
+  pointer-events: none;
+  display: none;
+}
