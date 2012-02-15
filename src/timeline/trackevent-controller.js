@@ -72,6 +72,7 @@ define( [], function() {
         return;
       }
 
+      console.log( target );
       if ( target === "Media Element" ) {
         butter.currentMedia.dispatch( "trackeventmouseover", e );
       } else {

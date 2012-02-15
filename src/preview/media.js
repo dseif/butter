@@ -338,6 +338,8 @@
       _mediaObject.listen( "trackeventupdated", onTrackEventUpdated );
       _mediaObject.listen( "trackeventmousedown", showOverlay );
       _mediaObject.listen( "trackeventmouseup", hideOverlay );
+      _mediaObject.listen( "trackeventmouseover", showOverlay );
+      _mediaObject.listen( "trackeventmouseout", hideOverlay );
 
       Object.defineProperties( this, {
         media: {
