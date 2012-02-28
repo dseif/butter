@@ -41,7 +41,7 @@
 
           _page.preparePopcorn(function() {
             for( var i = 0, l = targets.length; i < l; i++ ) {
-              butter.addTarget({ object: targets[ i ].id });
+              butter.addTarget({ element: targets[ i ].id });
             }
             for( var i = 0, l = medias.length; i < l; i++ ) {
               var url = "";

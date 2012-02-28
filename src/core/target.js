@@ -106,6 +106,12 @@ THE SOFTWARE.
             return _element;
           }
         },
+        elementID: {
+          enumerable: true,
+          get: function(){
+            return _element.id;
+          }
+        },
         json: {
           enumerable: true,
           get: function(){

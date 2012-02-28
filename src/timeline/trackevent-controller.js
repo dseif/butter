@@ -75,7 +75,7 @@ define( [], function() {
       if ( target === "Media Element" ) {
         butter.currentMedia.dispatch( "trackeventmouseout", e );
       } else {
-        butter.getTargetByType( "element", target ).dispatch( "trackeventmouseout", e );
+        butter.getTargetByType( "elementID", target ).dispatch( "trackeventmouseout", e );
       }
     });
 
@@ -88,7 +88,7 @@ define( [], function() {
       if ( target === "Media Element" ) {
         butter.currentMedia.dispatch( "trackeventmouseover", e );
       } else {
-        butter.getTargetByType( "element", target ).dispatch( "trackeventmouseover", e );
+        butter.getTargetByType( "elementID", target ).dispatch( "trackeventmouseover", e );
       }
     });
 
