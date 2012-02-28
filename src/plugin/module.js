@@ -120,6 +120,17 @@ THE SOFTWARE.
                 "width": helper.width() + "px",
                 "height": helper.height() + "px"
               });
+
+              $div[ 0 ].addEventListener( "mouseup", function( e ) {
+                var targets = butter.targets,
+                    medias = butter.media;
+                for( var i = 0, l = targets.length; i < l; i ++ ) {
+                  targets[ i ].dispatch( "trackeventmouseup", e );
+                }
+                for( var i = 0, l = medias.length; i < l; i++ ) {
+                  medias[ i ].dispatch( "trackeventmouseup", e );
+                }
+              }, false);
               return $div;
             },
             appendTo: "body",
@@ -128,6 +139,18 @@ THE SOFTWARE.
             revert: true,
             revertDuration: 0
           });
+
+          pluginElement.addEventListener( "mousedown", function( e ) {
+            var targets = butter.targets;
+                medias = butter.media;
+            for( var i = 0, l = targets.length; i < l; i ++ ) {
+              targets[ i ].dispatch( "trackeventmousedown", e );
+            }
+            for( var i = 0, l = medias.length; i < l; i++ ) {
+              medias[ i ].dispatch( "trackeventmousedown", e );
+            }
+          }, false);
+
           this.element = pluginElement;
           return pluginElement;
         }; //createElement

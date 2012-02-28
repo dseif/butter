@@ -29,7 +29,6 @@ THE SOFTWARE.
 
     var Target = function ( options ) {
       options = options || {};
-
       var _id = __guid++,
           _logger = new Logger( _id ),
           _em = new EventManager( this ),
@@ -44,6 +43,48 @@ THE SOFTWARE.
       if( !_element ){
         _logger.log( "Warning: Target element is null." );
       } //if
+
+      function showOverlay( e ) {
+        _this.overlay.style.display = "block";
+      }
+
+      function hideOverlay( e ) {
+        _this.overlay.style.display = "none";
+      }
+
+      function createOverlay( rectBounds ) {
+        var overlay = document.createElement( "div" );
+        overlay.style.zIndex = _element.style.zIndex + 1;
+        overlay.className += " butter-target-overlay";
+
+        overlay.style.left = rectBounds.left + "px";
+        overlay.style.top = rectBounds.top + "px";
+        overlay.style.width = rectBounds.width + "px";
+        overlay.style.height = rectBounds.height + "px";
+        document.body.appendChild( overlay );
+        _this.overlay = overlay;
+      }
+
+      createOverlay( _element.getBoundingClientRect() );
+
+      _element.addEventListener( "mouseover", showOverlay, false);
+      _element.addEventListener( "mouseout", hideOverlay, false);
+
+      _em.listen( "trackeventmouseup", function( e ) {
+        hideOverlay();
+      });
+
+      _em.listen( "trackeventmouseover", function( e ) {
+        showOverlay();
+      });
+
+      _em.listen( "trackeventmouseout", function( e ) {
+        hideOverlay();
+      });
+
+      _em.listen( "trackeventmousedown", function( e ) {
+        showOverlay();
+      });
 
       Object.defineProperties( this, {
         name: {

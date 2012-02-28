@@ -710,3 +710,17 @@ THE SOFTWARE.
   width: 102px;
   height: 10px;
 }
+
+.butter-target-overlay {
+  position: absolute;
+  background-color: rgba( 200, 200, 0, 0.6 );
+  pointer-events: none;
+  display: none;
+}
+
+.butter-media-overlay {
+  position: absolute;
+  background-color: rgba( 200, 0, 200, 0.6 );
+  pointer-events: none;
+  display: none;
+}

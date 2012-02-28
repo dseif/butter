@@ -5,7 +5,6 @@
       (function(){
         var _comm = new Comm(),
             _counter = 0,
-            
             _manifest = {};
 
         document.addEventListener( "DOMContentLoaded", function( e ){
@@ -17,7 +16,12 @@
           function sendData(){
             var popcornOptions = {};
             for( var item in _manifest ) {
-              popcornOptions[ item ] = document.getElementById( item ).value;
+              _popcornOptions[ item ] = document.getElementById( item ).value;
+            }
+            
+            if( validate() ) {
+              _comm.send( "submit", _popcornOptions );
+              _comm.send( "close" );
             }
             _comm.send( "submit", popcornOptions);
           } //sendData
@@ -72,7 +76,7 @@
                       option.value = targets[ i ];
                       option.innerHTML = targets[ i ];
                       select.appendChild( option );
-                      if( popcornOptions.target === targets[ i ] ) {
+                      if( _popcornOptions.target === targets[ i ] ) {
                         select.value = targets[ i ];
                       }
                     }
@@ -80,7 +84,7 @@
                     option.value = "Media Element";
                     option.innerHTML =  "Media Element";
                     select.appendChild( option );
-                    if( popcornOptions.target === "Media Element" ) {
+                    if( _popcornOptions.target === "Media Element" ) {
                         select.value = "Media Element";
                     }
                     col2.appendChild( select );
@@ -100,12 +104,6 @@
                   document.getElementById( "table" ).appendChild( row );
             }
           });
-
-          _comm.listen( "test", function( e ){
-            ++_counter;
-            document.getElementById( "counter" ).innerHTML = _counter;
-          });
-
         }, false );
       })();
     </script>
