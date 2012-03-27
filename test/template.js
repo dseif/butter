@@ -4,6 +4,7 @@ document.addEventListener( "DOMContentLoaded", function( e ){
     config: "../config/default.conf",
     ready: function( butter ){
       var media = butter.media[ 0 ];
+      media.url = "http://vimeo.com/11336811";
 
       var count = 0;
       media.listen( "mediaready", function( e ){

@@ -4,7 +4,9 @@
 
 define( [ "core/logger", "core/eventmanager" ], function( Logger, EventManager ) {
 
-  var POPCORN_URL = "../external/popcorn-js/popcorn.js";
+  var POPCORN_URL = "../external/popcorn-js/popcorn.js",
+      PLAYER_URL = "../external/popcorn-js/modules/player/popcorn.player.js",
+      VIMEO_URL = "../external/popcorn-js/players/vimeo/popcorn.vimeo.js";
 
   return function() {
     
@@ -23,14 +25,29 @@ define( [ "core/logger", "core/eventmanager" ], function( Logger, EventManager )
 
     this.preparePopcorn = function( readyCallback ) {
 
+      function isVimeoReady() {
+        if ( !window.Popcorn.vimeo ) {
+          setTimeout( function() {
+            isVimeoReady();
+          }, 1000 );
+        }
+        else {
+          readyCallback();
+        }
+      }
+
       function isPopcornReady() {
-        if ( !window.Popcorn ) {
+        if ( !window.Popcorn || !window.Popcorn.player ) {
           setTimeout( function() {
             isPopcornReady();
           }, 1000 );
         }
         else {
-          readyCallback();
+         var vimeo = document.createElement( "script" );
+         vimeo.src = VIMEO_URL;
+         document.head.appendChild( vimeo );
+
+         isVimeoReady();
         } //if
       } //isPopcornReady
 
@@ -38,6 +55,10 @@ define( [ "core/logger", "core/eventmanager" ], function( Logger, EventManager )
         var popcornSourceScript = document.createElement( "script" );
         popcornSourceScript.src = POPCORN_URL;
         document.head.appendChild( popcornSourceScript );
+        var playerScript = document.createElement( "script" );
+        playerScript.src = PLAYER_URL;
+        document.head.appendChild( playerScript );
+
         isPopcornReady();
       }
       else {
