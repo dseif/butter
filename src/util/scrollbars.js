@@ -135,7 +135,6 @@ define( [ "core/eventmanager" ], function( EventManagerWrapper ){
   function Horizontal( outerElement, innerElement ){
     var _element = document.createElement( "div" ),
         _handle = document.createElement( "div" ),
-        _hammer = new Hammer( innerElement ),
         _elementWidth,
         _parentWidth,
         _childWidth,
