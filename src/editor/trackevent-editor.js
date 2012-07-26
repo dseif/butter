@@ -180,18 +180,12 @@ define( [ "util/lang", "util/keys", "./base-editor",
      */
     extendObject.createManifestItem = function( name, manifestEntry, data, trackEvent, itemCallback ) {
       var elem = manifestEntry.elem || "default",
-          propertyArchetype = __defaultLayouts.querySelector( ".trackevent-property." + elem ).cloneNode( true ),
-          editorElement,
           itemLabel = manifestEntry.label || name,
+          isStartOrEnd = [ "start", "end" ].indexOf( itemLabel.toLowerCase() ) > -1,
+          propertyArchetype = __defaultLayouts.querySelector( ".trackevent-property." + elem + ( isStartOrEnd ? ".start-end" : "" ) ).cloneNode( true ),
+          editorElement,
           option,
           i, l;
-
-      // Treat 'in' and 'out' specially, changing their titles to 'Start' and 'End' respectively
-      if ( itemLabel === "In" ) {
-        itemLabel = "Start (seconds)";
-      } else if ( itemLabel === "Out" ) {
-        itemLabel = "End (seconds)";
-      }
 
       // Grab the element with class 'property-name' to supply the archetype for new manifest entries
       propertyArchetype.querySelector( ".property-name" ).innerHTML = itemLabel;
@@ -290,6 +284,8 @@ define( [ "util/lang", "util/keys", "./base-editor",
       var manifestOptions,
           item,
           element,
+          inputContainer,
+          unitLabel,
           i, l;
 
       container = container || extendObject.rootElement;
@@ -307,6 +303,7 @@ define( [ "util/lang", "util/keys", "./base-editor",
           continue;
         }
         element = extendObject.createManifestItem( item, manifestOptions[ item ], trackEvent.popcornOptions[ item ], trackEvent, itemCallback );
+
         container.appendChild( element );
       }
     };
