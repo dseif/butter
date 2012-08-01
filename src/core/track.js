@@ -184,6 +184,8 @@ define( [
         ]);
         _view.removeTrackEvent( trackEvent );
         trackEvent._track = null;
+        trackEvent.ghost = null;
+        trackEvent.isGhost = false;
         trackEvent.setPopcornWrapper( null );
         _this.dispatch( "trackeventremoved", trackEvent );
         return trackEvent;
@@ -207,8 +209,6 @@ define( [
     this.listen( "trackeventadded", function( trackevent ) {
       _view.checkOverlay( trackevent );
     });
-
-
   }; //Track
 
   return Track;

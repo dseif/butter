@@ -19,6 +19,7 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
         _typeElement = _element.querySelector( ".title" ),
         _draggable,
         _resizable,
+        _dropped = false,
         _trackEvent = trackEvent,
         _dragging = false,
         _this = this;
@@ -30,10 +31,16 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
       _handles[ 1 ].style.visibility = state ? "visible" : "hidden";
     } //toggleHandles
 
-    function resetContainer(){
+    function resetContainer( ){
       _element.style.left = _start * _zoom + "px";
       _element.style.width = ( _end - _start ) * _zoom + "px";
     } //resetContainer
+
+    this.updatePosition = function( element ) {
+      _element.style.left = element.style.left;
+      _element.style.width = element.style.width;
+      movedCallback()
+    };
 
     this.setToolTip = function( title ){
       _element.title = title;
@@ -146,9 +153,21 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
                   _this.dispatch( "trackeventdragstarted" );
                 },
                 stop: function(){
+                  var te;
                   _dragging = false;
                   _this.dispatch( "trackeventdragstopped" );
                   movedCallback();
+                },
+                drag: function( element ) {
+                  var tracks = _trackEvent._track._media.tracks,
+                      rect1 = element.getBoundingClientRect(),
+                      rect2;
+                  for ( var i = 0, l = tracks.length; i < l; i++ ) {
+                    rect2 = tracks[ i ].view.element.getBoundingClientRect();
+                    if ( !( ( rect1.top > rect2.bottom ) || ( rect1.bottom < rect2.top ) ) ) {
+                      tracks[ i ].view.checkOverlay( _trackEvent );
+                    }
+                  }
                 },
                 revert: true
               });
@@ -186,8 +205,9 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
     });
 
     function movedCallback() {
-      _element.style.top = "0px";
       var rect = _element.getClientRects()[ 0 ];
+
+      _element.style.top = "0px";
       _start = _element.offsetLeft / _zoom;
       _end = _start + rect.width / _zoom;
       _trackEvent.update({
