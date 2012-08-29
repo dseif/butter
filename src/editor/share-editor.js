@@ -24,7 +24,8 @@ define([ "editor/editor", "editor/base-editor", "ui/user-data",
         embedDimensions = embedSize.value.split( "x" ),
         embedWidth = embedDimensions[ 0 ],
         embedHeight = embedDimensions[ 1 ],
-        tooltip;
+        tooltip,
+        logout = false;
 
     function onMouseOver() {
       projectNameWrapper.removeEventListener( "mouseover", onMouseOver, false );
@@ -85,7 +86,8 @@ define([ "editor/editor", "editor/base-editor", "ui/user-data",
 
     function displayEditor() {
 
-      if ( !butter.cornfield.authenticated() ) {
+      if ( !butter.cornfield.authenticated() || logout ) {
+        logout = false;
         displayLogin();
         return;
       }
@@ -167,7 +169,10 @@ define([ "editor/editor", "editor/base-editor", "ui/user-data",
         save();
       }
     });
-    butter.listen( "logout", displayLogin );
+    butter.listen( "logout", function() {
+      logout = true;
+      displayLogin();
+    });
     butter.listen( "projectupdated", login );
 
     Editor.BaseEditor( this, butter, rootElement, {
