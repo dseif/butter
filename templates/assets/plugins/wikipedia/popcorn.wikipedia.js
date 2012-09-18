@@ -77,11 +77,12 @@
 
       _container.classList.add( "wikipedia-inner-container" );
 
-      _container.style.width = validateDimension( options.width, "100" ) + "%";
-      _container.style.height = validateDimension( options.height, "100" ) + "%";
-      _container.style.top = validateDimension( options.top, "0" ) + "%";
-      _container.style.left = validateDimension( options.left, "0" ) + "%";
-      _container.style.zIndex = +options.zindex;
+      _container.style.width = "100%";
+      _container.style.height = "100%";
+      _container.style.top = "0px";
+      _container.style.left = "0px";
+      _container.style.position = "relative";
+      _container.style.zIndex = 100;
 
       _titleDiv = create( "div" );
       _titleDiv.classList.add( "wikipedia-title" );

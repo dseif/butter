@@ -299,7 +299,7 @@
         /* TODO: determine if we need to turn on frameAnimation or not before calling generatePopcornString
          * for now we default to off when exporting by setting frameAnimation to false. This should be handled in #1370.
          */
-        popcornOptions.frameAnimation = false;
+        popcornOptions.frameAnimation = true;
         return _popcornWrapper.generatePopcornString( popcornOptions, _url, _target, null, callbacks, scripts, collectedEvents );
       };
 
@@ -461,6 +461,30 @@
             };
           },
           set: function( importData ){
+            _this.listen( "mediaready", function() {
+                var tracks = _this.tracks,
+                    trackEvents,
+                    po;
+                for ( var i = 0, l = tracks.length; i < l; i++ ) {
+                  trackEvents = tracks[ i ].trackEvents;
+                  for ( var j = 0, jl = trackEvents.length; j < jl; j++ ) {
+                    if ( trackEvents[ j ].type === "chattimeline" ) {
+                      po = trackEvents[ j ].popcornOptions;
+                      po.end = _this.duration;
+                      trackEvents[ j ].popcornOptions = po;
+                    }
+                  }
+                  console.log( tracks[ i ] );
+                  tracks[ i ].updateTrackEvents();
+                }
+            });
+            var getUrlParameters = function() {
+              var map = {};
+              var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                map[key] = value;
+              });
+              return map;
+            };
             if( importData.name ) {
               _name = importData.name;
             }
@@ -473,10 +497,90 @@
             if( importData.tracks ){
               var importTracks = importData.tracks;
               for( var i=0, l=importTracks.length; i<l; ++i ){
-                var newTrack = new Track();
-                newTrack.json = importTracks[ i ];
-                _this.addTrack( newTrack );
-                newTrack.updateTrackEvents();
+                if ( importTracks[ i ].chat ) {
+                  (function( xmlData, trackObj ) {
+
+                   var meetingId = getUrlParameters()[ "meetingId" ];
+                   xmlData = xmlData.replace( "{{MEETING_ID}}", meetingId );
+
+                   var xhr = new XMLHttpRequest(),
+                   data;
+
+                   xhr.open( "GET", xmlData, false );
+                   xhr.overrideMimeType( "application/json" );
+                   xhr.setRequestHeader( "If-Modified-Since", "Fri, 01 Jan 1960 00:00:00 GMT" );
+                   xhr.send( null );
+                   if( xhr.status === 200 ){
+                    try{
+                      var parser = new DOMParser();
+                      data = parser.parseFromString( xhr.responseText, "text/xml" );
+                      var dat = data.documentElement.childNodes;
+                      for ( var i = 0, l = data.documentElement.childNodes.length; i < l; i++ ) {
+                        var arr = [];
+                        if ( dat[ i ].nodeName !== "#text" ) {
+                          var newTrack = new Track();
+                          var te = {};
+                          te.type = dat[ i ].tagName;
+                          var po = {};
+                          po.start = dat[ i ].getAttribute( "in" );
+                          po.direction = dat[ i ].getAttribute( "direction" );
+                          po.name = dat[ i ].getAttribute( "name" );
+                          po.message = dat[ i ].getAttribute( "message" );
+                          te.popcornOptions = po;
+                          arr.push( te );
+                          var obj = JSON.parse( JSON.stringify( trackObj ) );
+                          obj.trackEvents = arr;
+                          newTrack.json = obj;
+                          _this.addTrack( newTrack );
+                          newTrack.updateTrackEvents();
+                        }
+                      }
+                    }
+                    catch( e ) {
+                      console.log( "SOME SHIT WENT WRONG", e ); 
+                    }
+                   }
+                  })( importTracks[ i ].chat, importTracks[ i ] );
+                }
+                if ( importTracks[ i ].slides ) {
+                   (function( svg, trackObj ) {
+                    var meetingId = getUrlParameters()[ "meetingId" ];
+                    svg = svg.replace( "{{MEETING_ID}}", meetingId );
+
+                    var xhr = new XMLHttpRequest(),
+                    data;
+
+                    xhr.open( "GET", svg, false );
+                    xhr.setRequestHeader( "If-Modified-Since", "Fri, 01 Jan 1960 00:00:00 GMT" );
+                    xhr.send( null );
+                    if( xhr.status === 200 ){
+                        data = xhr.responseXML;
+                        var images = data.getElementsByTagName( "image" );
+                        for ( var i = 0, l = images.length; i < l; i++ ) {
+                          var arr = [],
+                          newTrack = new Track(),
+                          te = {};
+                          te.type = "slide";
+                          var po = {};
+                          po.end = images[ i ].getAttribute( "out" );
+                          po.start = images[ i ].getAttribute( "in" );
+                          if ( images[ i ].getAttribute( "src" ) ) {
+                            //po.src = images[ i ].getAttribute( "src" );
+                            continue;
+                          } else {
+                            po.src = svg.split( "/shapes.svg" )[ 0 ] + "/" + images[ i ].getAttribute( "xlink:href" );
+                          }
+                          te.popcornOptions = po;
+                          arr.push( te );
+                          var obj = JSON.parse( JSON.stringify( trackObj ) );
+                          obj.trackEvents = arr;
+                          newTrack.json = obj;
+                          _this.addTrack( newTrack );
+                          newTrack.updateTrackEvents();
+                        }
+                    }
+                  })( importTracks[ i ].slides, importTracks[ i ] );
+                }
               }
             }
           },

@@ -134,7 +134,7 @@ define( [ "util/lang", "util/xhr",
      * @param {String} baseDir: Optional. Can be specified to replace {{baseDir}} in url variables
      */
     loadLayout: function( src, readyCallback, baseDir ) {
-      baseDir = baseDir || "";
+      baseDir = "butter/" || "";
       if ( src.indexOf( "{{baseDir}}" ) > -1 ) {
         src = src.replace( "{{baseDir}}", baseDir );
       }

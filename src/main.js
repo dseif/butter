@@ -763,6 +763,15 @@
         // otherwise, try to grab it from the config
         savedDataUrl = savedDataUrl || _config.value( "savedDataUrl" );
 
+var getUrlParameters = function() {
+  var map = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    map[key] = value;
+  });
+  return map;
+};
+
+savedDataUrl = "butter/templates/basic/" + savedDataUrl;
         // if either succeeded, proceed with XHR to load saved data
         if ( savedDataUrl ) {
 
@@ -788,7 +797,10 @@
             }
             catch( e ){
               _this.dispatch( "loaddataerror", "Saved data not formatted properly." );
-            }
+            
+}
+console.log( "DATAATATA", savedData.media[ 0 ].url );
+            savedData.media[ 0 ].url[ 0 ] = savedData.media[ 0 ].url[ 0 ].replace( "{{MEETING_ID}}", getUrlParameters()[ "meetingId" ] );
             _this.project.id = savedData.projectID;
             _this.project.name = savedData.name;
             _this.project.author = savedData.author;

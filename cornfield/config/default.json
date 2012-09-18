@@ -1,7 +1,7 @@
 {
   "server" : {
-    "bindIP" : "localhost",
-    "bindPort" : "8888"
+    "bindIP" : "192.168.209.145",
+    "bindPort": "8888"
   },
   "logger" : {
     "format" : "dev"
@@ -20,7 +20,7 @@
     "wwwRoot": "../",
     "templates": "../templates",
     "publish": "view",
-    "hostname": "http://localhost:8888"
+    "hostname": "http://192.168.209.145:8888"
   },
   "templates": {
     "test": "{{templateBase}}test-config.json",

@@ -74,7 +74,11 @@ app.configure( function() {
      * because the static file writes the response header before we hit this middleware
      */
     .use( function( req, res, next ) {
-      res.header( 'Cache-Control', 'no-store' );
+      res.header( "Cache-Control", "no-store" );
+      res.header( "Access-Control-Allow-Origin", "http://192.168.209.145" );
+      res.header( "Access-Control-Allow-Credentials", "true" );
+      res.header( "Access-Control-Allow-Methods", "GET, POST, OPTIONS" );
+      res.header( "Access-Control-Allow-Headers", "X-Requested-With, Content-Type" );
       return next();
     })
     .set('view options', {layout: false});
@@ -221,6 +225,7 @@ app.post( '/api/publish/:id', filter.isLoggedIn, filter.isStorageAvailable, func
         }
         mediaUrlsString += mediaUrls[ numSources - 1 ] + '" ]';
 
+        mediaPopcornOptions.frameAnimation = true;
         popcornString += '\n(function(){';
         popcornString += '\nvar popcorn = Popcorn.smart("#' + currentMedia.target + '", ' +
                          mediaUrlsString + ', ' + JSON.stringify( mediaPopcornOptions ) + ');';

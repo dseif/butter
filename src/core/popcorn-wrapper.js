@@ -303,6 +303,7 @@ define( [ "core/logger", "core/eventmanager", "util/uri" ], function( Logger, Ev
                           "var popcorn = Popcorn.baseplayer( '#" + target + "' " + popcornOptions + " );\n";
       }
       else{
+        console.log( popcornOptions, "ASDASDASDASDASDASDASD" );
         // just try to use Popcorn.smart to detect/setup video
         popcornString += "var popcorn = Popcorn.smart( '#" + target + "', " + url + popcornOptions + " );\n";
       }

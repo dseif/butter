@@ -42,6 +42,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open( "GET", url, true );
         xhr.onreadystatechange = callback;
+        xhr.withCredentials = true;
         xhr.setRequestHeader( "X-Requested-With", "XMLHttpRequest" );
         if( xhr.overrideMimeType && mimeTypeOverride ){
           xhr.overrideMimeType( mimeTypeOverride );
@@ -52,6 +53,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open( "POST", url, true );
         xhr.onreadystatechange = callback;
+        xhr.withCredentials = true;
         xhr.setRequestHeader( "X-Requested-With", "XMLHttpRequest" );
         if ( csrf_token ) {
           xhr.setRequestHeader( "X-CSRFToken", csrf_token );

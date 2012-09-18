@@ -29,10 +29,10 @@
       wrapper.classList.add( options.transition );
       wrapper.classList.add( "off" );
 
-      wrapper.style.top = options.top + "%";
-      wrapper.style.left = options.left + "%";
-      wrapper.style.height = options.height + "%";
-      wrapper.style.width = options.width + "%";
+      wrapper.style.top = "0px";
+      wrapper.style.left = "0px";
+      wrapper.style.height = "100%";
+      wrapper.style.width = "100%";
       wrapper.style.position = "absolute";
       wrapper.style.zIndex = +options.zindex;
 

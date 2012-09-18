@@ -16,14 +16,13 @@
         "icon": "{{baseDir}}templates/assets/plugins/popup/popup-icon.png"
       },
       {
+        "type": "slide",
+        "path": "{{baseDir}}/templates/assets/plugins/slide/popcorn.slide.js"
+      },
+      {
         "type": "googlemap",
         "path": "{{baseDir}}templates/assets/plugins/googlemap/popcorn.googlemap.js",
         "icon": "{{baseDir}}resources/icons/map.png"
-      },
-      {
-        "type": "twitter",
-        "path": "{{baseDir}}templates/assets/plugins/twitter/popcorn.twitter.js",
-        "icon": "{{baseDir}}templates/assets/plugins/twitter/twitter-icon.png"
       },
       {
         "type": "image",
@@ -31,21 +30,9 @@
         "icon": "{{baseDir}}templates/assets/plugins/image/image-icon.png"
       },
       {
-        "type": "loopPlugin",
-        "displayName": "loop",
-        "path": "{{baseDir}}templates/assets/plugins/loopPlugin/popcorn.loopPlugin.js",
-        "icon": "{{baseDir}}templates/assets/plugins/loopPlugin/loop-icon.png"
-      },
-      {
-        "type": "skip",
-        "path": "{{baseDir}}templates/assets/plugins/skip/popcorn.skip.js",
-        "icon": "{{baseDir}}templates/assets/plugins/skip/skip-icon.png"
-      },
-      {
-        "type": "pausePlugin",
-        "displayName": "Pause",
-        "path": "{{baseDir}}templates/assets/plugins/pausePlugin/popcorn.pausePlugin.js",
-        "icon": "{{baseDir}}templates/assets/plugins/pausePlugin/pause-icon.png"
+        "type": "chattimeline",
+        "displayName": "chat",
+        "path": "{{baseDir}}templates/assets/plugins/chat/popcorn.chattimeline.js"
       },
       {
         "type": "wikipedia",
@@ -62,13 +49,9 @@
       "titles",
       "popup",
       "googlemap",
-      "twitter",
       "image",
       "wikipedia",
-      "webpage",
-      "loopPlugin",
-      "pausePlugin",
-      "skip"
+      "webpage"
     ]
   },
   "editor": {

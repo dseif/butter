@@ -5,6 +5,7 @@ html(lang='en')
     !{templateScripts}
     !{externalAssets}
     !{popcorn}
+    link(rel='stylesheet', href='http://192.168.209.145/playback/presentation/css/bbb.playback.css')
     link(rel='stylesheet', href='/css/embed.css')
     link(rel='stylesheet', href="/css/controls.css")
     // This is the embed, the actual content is at the following URL
@@ -16,77 +17,17 @@ html(lang='en')
       @-webkit-viewport { width: device-width; }
       @viewport { width: device-width; }
     script(src='/src/embed.js')
-  body.embed
+  body(id='remix')
     #container.container
-      #video-container.video
-        #video
-        #controls-big-play-button
-        #post-roll.embed-overlay(style='display: none;')
-          .post-roll-inner
-            a(href='#').embed-logo
-            .embed-project
-              div
-                .mozpopcorn Mozilla Popcorn
-                .embed-title #{title}
-                .embed-author #{author}
-              .post-roll-description
-                | This was created with Mozilla Popcorn. Create a project like this!
-              ul.embed-nav.post-roll-options
-                li
-                  a#replay-post
-                    span Replay
-                li
-                  a(href='#{remixUrl}', target='_blank')#remix-post
-                    span Remix
-                li
-                  a#share-post
-                    span Share
-        #share.embed-overlay(style='display: none;')
-          .share-inner
-            a#share-close X
-            a.embed-logo
-            .embed-project
-              div
-                .mozpopcorn Mozilla Popcorn
-                .embed-title #{title}
-                .embed-author #{author}
-            #share-options.share-options
-              fieldset
-                label URL
-                input#share-url.share-ul(type='url')
-                ul.embed-nav.share-buttons
-                  li
-                    a#replay-share(href='#') Twitter
-                  li
-                    a#remix-share(href='#') Facebook
-                  li
-                    a#share-share(href='#') Google+
-              fieldset
-                label Embed
-                textarea#share-iframe
-                  iframe
-                .share-size
-                  div.size-options
-                    a.small.option(href='#')
-                      span.icon
-                      span.size Small
-                      span.dimensions 560x358
-                    a.medium.option.current(href='#')
-                      span.icon
-                      span.size Medium
-                      span.dimensions 640x403
-                    a.large.option(href='#')
-                      span.icon
-                      span.size Large
-                      span.dimensions 853x523
-                    a.xlarge.option(href='#')
-                      span.icon
-                      span.size X-Large
-                      span.dimensions 1280x763
-        .embed-info
-          .embed-logo-small
-          .embed-details
-            a.mozpop(href='javascript:void(0);') Mozilla Popcorn
-            a.embed-title(href='javascript:void(0);') #{title}
-            a.embed-author(href='javascript:void(0);') #{author}
+      div(id='playbackArea', class='clearfix', role='main')
+        div(id='thumbnails', role='region', aria-label='Slide thumbnails')
+        div(id='presentation')
+          div(id='slide', role='region', aria-label='Slide')
+          div(id='slideText', class='visually-hidden', role='polite')
+        div(id='cursor', class='circle', style='visibility:hidden;')
+        div(class='chatcontainer')
+          div(id='chat', aria-live='polite', role='region', aria-label='Chat me')
+          div(id='videoRecordingWrapper', role='region', aria-label='Video')
+            div(id='video-container', class='video-container-wrapper', data-butter='target')
+              div(id='video', data-butter='media')
       #controls.controls(style='display: none;')

@@ -4,6 +4,7 @@ var dbCheckFn, filters;
 
 filters = {
   isLoggedIn: function( req, res, next ) {
+    console.log( "AAAAA", req.session );
     if ( req.session.email ) {
       next();
     } else {

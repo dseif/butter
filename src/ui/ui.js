@@ -13,8 +13,8 @@ define( [ "core/eventmanager", "./toggler",
       // Butter's UI is written in LESS, but deployed as CSS.
       // Depending on the config file, we'll use a pre-built
       // CSS file, or build CSS from LESS in the browser.
-      BUTTER_CSS_FILE = "{css}/butter.ui.css",
-      BUTTER_LESS_FILE = "{css}/butter.ui.less";
+      BUTTER_CSS_FILE = "butter/css/butter.ui.css",
+      BUTTER_LESS_FILE = "butter/css/butter.ui.less";
 
   var __unwantedKeyPressElements = [
     "TEXTAREA",
@@ -67,6 +67,7 @@ define( [ "core/eventmanager", "./toggler",
             return;
           }
           
+path = "butter/templates/assets/" + path;
           img = new Image();
           img.id = plugin.type + "-icon";
           img.src = path;

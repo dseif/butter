@@ -38,6 +38,7 @@ define([ 'util/xhr' ], function( XHR ){
         checkFn = checkFn || DEFAULT_CHECK_FUNCTION();
 
         url = fixUrl( url );
+        url = "butter/external/popcorn-js/" + url;
 
         if( !checkFn() ){
           var scriptElement = document.createElement( "script" );

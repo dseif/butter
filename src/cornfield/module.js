@@ -5,7 +5,7 @@
 define(['util/xhr'], function(XHR) {
 
   function audience() {
-    return location.protocol + "//" + location.hostname + ( location.port ? ":" + location.port : "" );
+    return location.protocol + "//" + location.hostname + ":8888";
   }
 
   var Cornfield = function( butter, config ) {
@@ -26,12 +26,13 @@ define(['util/xhr'], function(XHR) {
 
     this.login = function(callback) {
       navigator.id.get(function(assertion) {
-        if (assertion) {
+        if ( assertion ) {
           XHR.post(server + "/browserid/verify",
-            { audience: server, assertion: assertion },
+            { audience: "http://192.168.209.145", assertion: assertion },
             function() {
               if (this.readyState === 4) {
                 try {
+                console.log( "HEUURRRR TOOOOO", this.response );
                   var response = JSON.parse( this.response || this.responseText );
                   if (response.status === "okay") {
 
@@ -45,6 +46,7 @@ define(['util/xhr'], function(XHR) {
                   // If there was an error of some sort, callback on that
                   callback(response);
                 } catch (err) {
+                  console.log( err, "QDQDQDQ" );
                   callback({ error: "an unknown error occured" });
                 }
               }
@@ -56,13 +58,16 @@ define(['util/xhr'], function(XHR) {
     };
 
     this.whoami = function( callback ) {
+      console.log( "INSIDE WHOAMI", server );
       XHR.get( server + "/api/whoami", function() {
         if ( this.readyState === 4 ) {
           var response;
 
           try {
+          console.log( "INSIDE TRY", this.response, this );
             response = JSON.parse( this.response || this.responseText );
             if ( this.status === 200 ) {
+            console.log( "STATUS 200" );
               authenticated = true;
               email = response.email;
               username = response.username;
@@ -85,6 +90,7 @@ define(['util/xhr'], function(XHR) {
     butter.listen( "ready", function onMediaReady() {
       butter.unlisten( "ready", onMediaReady );
 
+      console.log( "BONESSS" );
       butter.cornfield.whoami( function( response ) {
         if ( !response.error ) {
           butter.dispatch( "autologinsucceeded", response );
@@ -185,6 +191,7 @@ define(['util/xhr'], function(XHR) {
       XHR.post( url, data, function() {
         if (this.readyState === 4) {
           try {
+          console.log( "WE IN DA POST" );
             var response = JSON.parse( this.response || this.responseText );
             callback(response);
           } catch (err) {
