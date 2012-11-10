@@ -1044,9 +1044,9 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseMove( e ) {
-    var clientX = e.touches ? e.touches[ 0 ].clientX : e.clientX,
-        clientY = e.touches ? e.touches[ 0 ].clientY : e.clientY;
-    e.preventDefault();
+      var clientX = e.touches ? e.touches[ 0 ].clientX : e.clientX,
+          clientY = e.touches ? e.touches[ 0 ].clientY : e.clientY;
+      e.preventDefault();
       if ( !_moved ) {
         _moved = true;
         _placeHolder = createPlaceholder( _draggingElement );
@@ -1102,9 +1102,10 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseDown( e ) {
-    var clientX = e.touches ? e.touches[ 0 ].clientX : e.clientX,
+      var clientX = e.touches ? e.touches[ 0 ].clientX : e.clientX,
         clientY = e.touches ? e.touches[ 0 ].clientY : e.clientY;
-      if ( e.which !== 1 ) {
+
+      if ( !e.touches && e.which !== 1 ) {
         return;
       }
       _moved = false;
@@ -1117,7 +1118,9 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
       _mouseDownPosition = clientY;
 
       window.addEventListener( "mouseup", onElementMouseUp, false );
+      window.addEventListener( "touchend", onElementMouseUp, false );
       window.addEventListener( "mousemove", onElementMouseMove, false );
+      window.addEventListener( "touchmove", onElementMouseMove, false );
 
       DragNDrop.dispatch( "sortstarted" );
     }
@@ -1142,6 +1145,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     _instance.addItem = function( item ) {
       _elements.push( item );
       item.addEventListener( "mousedown", onElementMouseDown, false );
+      item.addEventListener( "touchstart", onElementMouseDown, false );
     };
 
     _instance.removeItem = function( item ) {

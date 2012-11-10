@@ -122,7 +122,6 @@ define( [ "core/eventmanager", "./toggler",
 
         window.addEventListener( "touchstart", function( e ) {
             var touchTime = Date.now();
-            console.log( touchTime, _lastTouch, touchTime - _lastTouch );
             if ( touchTime - _lastTouch <= 500 ) {
               e.preventDefault();
             }

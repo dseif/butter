@@ -62,7 +62,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           menuDiv = trackDiv.querySelector( ".menu" ),
           deleteButton = menuDiv.querySelector( ".delete" );
 
-      deleteButton.addEventListener( "click", function( e ) {
+      function deleteTrack(){
         var dialog = Dialog.spawn( "delete-track", {
           data: track.name,
           events: {
@@ -82,6 +82,37 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           }
         });
         dialog.open();
+      }
+
+      deleteButton.addEventListener( "click", function( e ) {
+        deleteTrack();
+      }, false );
+
+      trackDiv.addEventListener( "touchstart", function( e ) {
+        var longPressTimeout,
+            dialog;
+
+        e.preventDefault();
+
+        function onTouchend() {
+          clearTimeout( longPressTimeout );
+          trackDiv.removeEventListener( "touchmove", onTouchMove, false );
+        }
+
+        function onTouchMove() {
+          clearTimeout( longPressTimeout );
+          trackDiv.removeEventListener( "touchend", onTouchend, false );
+        }
+
+        trackDiv.addEventListener( "touchmove", onTouchMove, false );
+
+        trackDiv.addEventListener( "touchend", onTouchend, false );
+
+        longPressTimeout = window.setTimeout(function() {
+          deleteTrack();
+          trackDiv.removeEventListener( "touchmove", onTouchMove, false );
+          trackDiv.removeEventListener( "touchend", onTouchend, false );
+        }, 1000 );
       }, false );
 
       trackDiv.addEventListener( "dblclick", function( e ){
