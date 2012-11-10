@@ -326,9 +326,53 @@ define( [ "core/eventmanager", "./toggler",
         };
 
     butter.listen( "trackeventadded", function( e ) {
-      var trackEvent = e.data;
+      var trackEvent = e.data,
+          view = trackEvent.view,
+          element = view.element;
+
+
       orderedTrackEvents.push( trackEvent );
       orderedTrackEvents.sort( sortTrackEvents );
+
+      element.addEventListener( "touchstart", function( e ) {
+        var longPressTimeout,
+            dialog;
+
+        e.preventDefault();
+
+        function onTouchend() {
+          clearTimeout( longPressTimeout );
+          element.removeEventListener( "touchmove", onTouchMove, false );
+        }
+
+        function onTouchMove() {
+          clearTimeout( longPressTimeout );
+          element.removeEventListener( "touchend", onTouchend, false );
+        }
+
+        element.addEventListener( "touchmove", onTouchMove, false );
+
+        element.addEventListener( "touchend", onTouchend, false );
+
+        longPressTimeout = window.setTimeout(function() {
+          dialog = Dialog.spawn( "delete-track", {
+            data: "this track event",
+            events: {
+              submit: function( e ) {
+                butter.editor.closeTrackEventEditor( trackEvent );
+                trackEvent.track.removeTrackEvent( trackEvent );
+                element.removeEventListener( "touchmove", onTouchMove, false );
+                element.removeEventListener( "touchend", onTouchend, false );
+                dialog.close();
+              },
+              cancel: function( e ) {
+                dialog.close();
+              }
+            }
+          });
+          dialog.open();
+        }, 1000 );
+      }, false );
     }); // listen
 
     butter.listen( "trackeventremoved", function( e ) {
