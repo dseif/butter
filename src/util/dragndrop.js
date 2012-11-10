@@ -534,7 +534,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
     element.setAttribute( "draggable", true );
 
-    element.addEventListener( "touchstart", function( e ) {
+    element.addEventListener( "dragstart", function( e ) {
       __currentDraggingElement = element;
       e.dataTransfer.effectAllowed = "all";
       // coerce to string so IE9 doesn't throw

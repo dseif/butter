@@ -396,7 +396,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
 
     _media.listen( "mediaready", function( e ) {
       _duration = e.target.duration;
-      updateView();
+      _viewPort.style.left = outerElement.scrollLeft / innerElement.offsetWidth * 100 + "%";
+      _viewPort.style.right = "0%";
     });
 
     _this.resize = function() {
