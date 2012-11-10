@@ -11,6 +11,7 @@ define( [ "util/dragndrop", "util/lang", "editor/editor", "text!layouts/plugin-l
         _containerElement = _parentElement.querySelector( ".plugin-container" ),
         _targets = butter.targets,
         _iframeCovers = [],
+        _lastTouch = 0,
         _iframeCover;
 
     for ( var i = 0, l = _targets.length; i < l; i++ ) {
@@ -66,6 +67,13 @@ define( [ "util/dragndrop", "util/lang", "editor/editor", "text!layouts/plugin-l
       }
 
       element.addEventListener( "dblclick", onDoubleClick, false );
+      element.addEventListener( "touchstart", function() {
+        var touchTime = Date.now();
+        if ( touchTime - _lastTouch <= 500 ) {
+          onDoubleClick();
+        }
+        _lastTouch = touchTime;
+      }, false );
 
       if ( iconImg ) {
         icon.style.backgroundImage = "url('" + iconImg.src + "')";
