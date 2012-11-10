@@ -48,7 +48,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
     }
 
     function onMouseMove( e ){
-      var pageY = e.touches[ 0 ].pageY || e.pageY,
+      var pageY = e.touches ? e.touches[ 0 ].pageY : e.pageY,
           diff = pageY - _mousePos,
           maxDiff = _elementHeight - _handleHeight;
       e.preventDefault();
@@ -110,7 +110,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
         return;
       }
 
-      var pageY = e.touches[ 0 ].pageY || e.pageY;
+      var pageY = e.touches ? e.touches[ 0 ].pageY : e.pageY;
       var posY = pageY,
           handleRect = _handle.getBoundingClientRect(),
           elementRect = _element.getBoundingClientRect(),
@@ -182,7 +182,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
     function onMouseMove( e ){
       e.preventDefault();
-      var pageX = e.touches[ 0 ].pageX || e.pageX;
+      var pageX = e.touches ? e.touches[ 0 ].pageX : e.pageX;
       var diff = pageX - _mousePos;
       diff = Math.max( 0, Math.min( diff, _elementWidth - _handleWidth ) );
       _handle.style.left = diff + "px";
@@ -193,7 +193,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
     function onMouseDown( e ){
       if( e.button === 0 ){
-        var pageX = e.touches[ 0 ].pageX || e.pageX;
+        var pageX = e.touches ? e.touches[ 0 ].pageX : e.pageX;
         var handleX = _handle.offsetLeft;
         _mousePos = pageX - handleX;
         window.addEventListener( "mouseup", onMouseUp, false );
@@ -241,7 +241,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
         return;
       }
 
-      var pageX = e.touches[ 0 ].pageX || e.pageX;
+      var pageX = e.touches ? e.touches[ 0 ].pageX : e.pageX;
       var posX = pageX,
           handleRect = _handle.getBoundingClientRect(),
           elementRect = _element.getBoundingClientRect(),
