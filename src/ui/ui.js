@@ -31,6 +31,7 @@ define( [ "core/eventmanager", "./toggler",
     var _visibility = true,
         _uiConfig = butter.config,
         _uiOptions = _uiConfig.value( "ui" ),
+        _lastTouch = 0,
         _unloadDialog,
         _this = this;
 
@@ -118,6 +119,15 @@ define( [ "core/eventmanager", "./toggler",
 
         _this.tray.attachToDOM();
         _this.header.attachToDOM();
+
+        window.addEventListener( "touchstart", function( e ) {
+            var touchTime = Date.now();
+            console.log( touchTime, _lastTouch, touchTime - _lastTouch );
+            if ( touchTime - _lastTouch <= 500 ) {
+              e.preventDefault();
+            }
+            _lastTouch = touchTime;
+        }, false );
       }
       else {
         onReady();
