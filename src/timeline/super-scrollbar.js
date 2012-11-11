@@ -282,7 +282,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
 
     function updateZoomSlider( e ) {
       var clientX = e.touches ? e.touches[ 0 ].clientX : e.clientX,
-          position = e.clientX - ( _zoomSliderContainer.offsetLeft + ( _zoomSliderHandle.offsetWidth / 2 ) ),
+          position = clientX - ( _zoomSliderContainer.offsetLeft + ( _zoomSliderHandle.offsetWidth / 2 ) ),
           scale;
 
       if ( position < 0 ) {
